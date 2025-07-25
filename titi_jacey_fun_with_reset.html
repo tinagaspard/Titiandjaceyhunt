@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>TiTi & Jacey Man’s Day of Fun Scavenger Hunt</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fdf6f0;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+  }
+  h1 {
+    font-size: 2em;
+    color: #e07a5f;
+  }
+  .clue-card {
+    background-color: #fff;
+    border: 2px solid #e07a5f;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 400px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .clue-card:hover {
+    transform: scale(1.02);
+  }
+  .clue-content {
+    display: none;
+    margin-top: 10px;
+  }
+  .completed {
+    background-color: #d5eadf !important;
+    border-color: #3a7d44 !important;
+    color: #3a7d44;
+  }
+  #progress {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
+  }
+</style>
+</head>
+<body>
+
+<h1>🕵️‍♂️ TiTi & Jacey Man’s Day of Fun Scavenger Hunt</h1>
+<p>Tap each card to reveal your next clue. Let’s have some fun!</p>
+
+<div class="clue-card" onclick="revealClue(this, 0)">
+  <div><strong>Clue #1:</strong> 🧁 The Yum Begins</div>
+  <div class="clue-content">“Today’s the day for laughs and cheer—<br>
+  And lucky for you, we’re starting here!<br>
+  Your belly is rumbling, so what’s the play?<br>
+  Donuts or burgers or pancakes today?”</div>
+</div>
+
+<div class="clue-card" onclick="revealClue(this, 1)">
+  <div><strong>Clue #2:</strong> 👟 Step It Out</div>
+  <div class="clue-content">“Now that we’re fueled and feelin’ great,<br>
+  Let’s take a walk—it won’t be late!<br>
+  The lake or the park, you get to choose,<br>
+  Just bring your steps and walking shoes!”</div>
+</div>
+
+<div class="clue-card" onclick="revealClue(this, 2)">
+  <div><strong>Clue #3:</strong> 🐾 Pit Stop with Piper</div>
+  <div class="clue-content">“We’ve moved our feet, the sun is bright,<br>
+  Let’s head back home—no need to fight!<br>
+  A rest with Piper and Uncle Brad too,<br>
+  Some chill time at home just waiting for you!”</div>
+</div>
+
+<div class="clue-card" onclick="revealClue(this, 3)">
+  <div><strong>Clue #4:</strong> 🔍 Mystery Zone</div>
+  <div class="clue-content">“Where to now? You get to explore—<br>
+  A book shop, library, or hardware store!<br>
+  Or maybe the mall with gadgets and toys,<br>
+  It’s up to you, brave clue boy!”</div>
+</div>
+
+<div class="clue-card" onclick="revealClue(this, 4)">
+  <div><strong>Clue #5:</strong> 🍔 Let’s Do Lunch</div>
+  <div class="clue-content">“Midday is here, let’s find some food,<br>
+  Something tasty to fit your mood!<br>
+  An old favorite or something brand new—<br>
+  Picnic at home or dine-in too!”</div>
+</div>
+
+<div class="clue-card" onclick="revealClue(this, 5)">
+  <div><strong>Clue #6:</strong> 🍧 The Chill Thrill</div>
+  <div class="clue-content">“Now that Uncle Brad is done with his day,<br>
+  Let’s celebrate in the yummiest way!<br>
+  Snowballs or ice cream, the treat is neat—<br>
+  Let’s go find something icy and sweet!”</div>
+</div>
+
+<div class="clue-card" onclick="revealClue(this, 6)">
+  <div><strong>Clue #7:</strong> 🎤 Choose the Finale</div>
+  <div class="clue-content">“You’ve reached the end, but wait—there’s more!<br>
+  A final surprise behind the next door.<br>
+  Dance off? Game night? Art supplies?<br>
+  You pick the fun—it’s your grand prize!”</div>
+</div>
+
+
+<div id="progress">Clues found: 0 / 7</div>
+<button onclick="resetClues()" style="margin-top: 20px; padding: 10px 20px; background-color: #ffb703; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer;">🔄 Reset Hunt</button>
+
+
+<canvas id="confetti"></canvas>
+<audio id="chime" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3" preload="auto"></audio>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js">
+  function resetClues() {
+    const clueCards = document.querySelectorAll('.clue-card');
+    clueCards.forEach(card => {
+      card.classList.remove('completed');
+      const content = card.querySelector('.clue-content');
+      content.style.display = 'none';
+    });
+    cluesFound = 0;
+    document.getElementById('progress').innerText = `Clues found: 0 / ${totalClues}`;
+  }
+</script>
+
+<script>
+  let cluesFound = 0;
+  const totalClues = 7;
+  const chime = document.getElementById('chime');
+
+  function revealClue(element, index) {
+    const content = element.querySelector('.clue-content');
+    if (!content.style.display || content.style.display === 'none') {
+      content.style.display = 'block';
+      element.classList.add('completed');
+      cluesFound++;
+      document.getElementById('progress').innerText = `Clues found: ${cluesFound} / ${totalClues}`;
+      chime.play();
+      if (cluesFound === totalClues) {
+        launchConfetti();
+      }
+    }
+  }
+
+  function launchConfetti() {
+    confetti({
+      particleCount: 150,
+      spread: 100,
+      origin: { y: 0.6 }
+    });
+  }
+
+  function resetClues() {
+    const clueCards = document.querySelectorAll('.clue-card');
+    clueCards.forEach(card => {
+      card.classList.remove('completed');
+      const content = card.querySelector('.clue-content');
+      content.style.display = 'none';
+    });
+    cluesFound = 0;
+    document.getElementById('progress').innerText = `Clues found: 0 / ${totalClues}`;
+  }
+</script>
+
+
+</body>
+</html>
